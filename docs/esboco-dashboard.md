@@ -1,6 +1,6 @@
 # Esboço do Dashboard
 
-> Conteúdo extraído da apresentação `Esboço dashboard.pptx`
+> Conteúdo extraído de `Esboço dashboard.pptx`
 
 ## Visão Geral
 
@@ -8,7 +8,7 @@ O dashboard apresenta uma interface dividida em:
 
 ### Painel Lateral (Esquerdo)
 - **Seletor de Período:** RangeSlider permitindo selecionar intervalo entre semestres (ex: 2010.1 a 2024.1)
-- **Setores de Atuação:** Barra de busca com sugestões em tempo real
+- **Setore(s) selecionado(s):** Barra de busca com sugestões em tempo real
 - **Modo Comparar:** Radio button para ativar/desativar comparação entre dois setores
 
 ### Área Principal
@@ -17,7 +17,6 @@ O dashboard apresenta uma interface dividida em:
   - Professor
   - Setor
   - Disciplina
-  - Projetos (PPG, TCC, PROJETO, etc.)
   - CH / Semana
   - Demanda (Alta / Média / Baixa)
 
