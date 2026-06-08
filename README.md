@@ -46,7 +46,7 @@ oferta-disciplinas/
 │   ├── mapeamento-funcoes.md    # Especificação de funções
 │   ├── mapeamento-layout.md     # Especificação do layout
 │   └── esboco-dashboard.md      # Descrição visual do dashboard
-├── notebooks/                   # Jupyter notebooks (prototipagem)
+├── notebooks/                   # Google Colab notebooks (prototipagem)
 ├── .gitignore                   # Arquivos ignorados pelo Git
 ├── LICENSE                      # Licença MIT
 ├── requirements.txt             # Dependências do projeto

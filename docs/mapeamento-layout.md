@@ -59,7 +59,7 @@ Renderiza a área de exibição das tabelas de professores, composta por dois bl
 **Componentes internos e IDs:**
 
 | Componente | ID | Descrição |
-|---|---|---|
+|------------|----|-----------|
 | `html.Div` | `tabela-professores-1` | Tabela principal, sempre visível. Alimentada pelo callback `atualizar_tabela_1` via `cria_tabela_professores()` |
 | `html.Div` | `container-comparacao` | Container dinâmico controlado pelo callback `exibir_segunda_tabela()`. Agrupa os componentes que aparecem/desaparecem no modo de comparação |
 | `dcc.Dropdown` | `barra-pesquisa-2` | Barra de busca do segundo setor. Opções atualizadas pelo callback `atualizar_opcoes_dropdown_2` |

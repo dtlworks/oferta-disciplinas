@@ -1,6 +1,7 @@
 # Esboço do Dashboard
 
 > Conteúdo extraído de `Esboço dashboard.pptx`
+Para visualizar o esboço feito, acesse: https://imgur.com/a/5cCcokk
 
 ## Visão Geral
 
@@ -35,11 +36,7 @@ O dashboard apresenta uma interface dividida em:
 
 ### Classificação de Demanda
 | Faixa | Classificação |
-|---|---|
-| <= 8h/semana | Baixa |
-| > 12h/semana | Alta |
-| Demais casos | Média |
-
-### Exemplo de Dados (Mockup)
-- **Estruturas:** Eduardo Nobre (22h, Média), Paulo César (16h, Média), Luciana Vieira (16h, Alta)
-- **Recursos Hídricos:** Carlos Ruberto (22h, Alta), Christopher (16h, Média), Professor 3 (10h, Média)
+|-------|---------------|
+| <= 8h/semana | Baixa  |
+| > 12h/semana | Alta   |
+| Demais casos | Média  |
