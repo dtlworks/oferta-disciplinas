@@ -14,6 +14,7 @@ O dashboard apresenta uma interface dividida em:
 
 ### Área Principal
 - **Gráfico de Barras:** "Carga Horária dos Setores" — exibe a carga horária média por setor
+- **Título e subtítulo (cabeçalho)**  
 - **Tabela de Distribuição de Professores:** Lista detalhada com colunas:
   - Professor
   - Setor

@@ -1,9 +1,9 @@
 # Mapeamento das Funções
 
-## Tratamento dos Dados (`Tratamento_dos_dados.ipynb`)
+## Tratamento dos Dados - Ficará em outro .ipynb
 
 ### `le_ofertas(path: str) -> pd.DataFrame`
-Le arquivos `.xlsx` (ofertas a cada período) e disponibiliza o `df_ofertas` estruturado com colunas:
+Lê arquivos `.xlsx` (ofertas a cada período) e disponibiliza o `df_ofertas` estruturado com colunas:
 - `Código`
 - `Disciplina`
 - `Turma`
@@ -18,13 +18,40 @@ Le arquivos `.xlsx` (ofertas a cada período) e disponibiliza o `df_ofertas` est
 - `Oferta` (usar o ano de oferta como identificador do arquivo)
 
 ### `le_setores(path: str) -> pd.DataFrame`
-Le o arquivo `setores_ctec.xlsx` onde há a definição de setores para as disciplinas (arquivo que poderá ser alterado conforme necessário sem mudar o funcionamento do dashboard), gerando o `df_setores` com colunas:
+Lê o arquivo `setores_ctec.xlsx` onde há a definição de setores para as disciplinas (arquivo este que poderá ser alterado conforme necessário e não mudará o funcionamento do dashboard), gerando o `df_setores` com colunas:
 - `Código`
 - `Disciplina`
 - `Setor`
 
 ### `grava_dados(df_ofertas, df_setores, path: str) -> None`
-Recebe os DataFrames gerados, convertendo-os para SQL e salvando-os em um banco de dados.
+Recebe os dfs gerados, convertendo-os para SQL e salvando-os em um banco de dados com a seguinte estrutura:
+
+**Setor**
+- `id_setor`: varchar / PK
+- `nome_setor`: varchar
+
+**Disciplinas**
+- `codigo`: varchar / PK
+- `nome_disciplina`: varchar
+- `carga_horaria`: int
+- `id_setor`: FK
+
+**Professor**
+- `id_professor`: varchar / PK
+- `nome_professor`: char
+
+**Oferta**
+- `id_oferta`: varchar / PK
+- `codigo`: FK
+- `turma`: int
+- `id_professor`: FK
+- `ch_professor`: int
+- `id_professor2`: FK (null)
+- `ch_professor2`: int (null)
+- `horario`: varchar
+- `local`: char
+- `matriculados`: int
+- `capacidade`: int
 
 ---
 
@@ -33,7 +60,9 @@ Recebe os DataFrames gerados, convertendo-os para SQL e salvando-os em um banco 
 ### Funções Auxiliares
 
 #### `carrega_dados(path: str) -> pd.DataFrame`
-Le o arquivo do banco de dados (`.db`) e reconstrói tudo em um único `df_bruto` — já realizando as filtragens convenientes — que será utilizado para a alimentação do Dashboard. Solução pode ser feita com `join` e a biblioteca `sqlalchemy`.
+Lê o arquivo do banco de dados (`.db`) e reconstrói o `df_bruto` a partir das colunas estritamente necessárias para alimentar o Dashboard.
+
+O cruzamento de informações entre tabelas é feito por colunas em comum, evitando armazenar colunas redundantes. As filtragens convenientes **NÃO** ocorrem aqui — são aplicadas pelos callbacks no momento da interação do usuário. Implementar os cruzamentos diretamente nos callbacks conforme forem surgindo.
 
 #### `identifica_ofertas(df_bruto: pd.DataFrame) -> list`
 Recebe o `df_bruto` e identifica os semestres ofertados para alimentar o Range Slider de seleção temporal, retornando a `lista_ofertas`.
@@ -53,29 +82,39 @@ Retorna `df_final`.
 Filtra os setores disponíveis com base no texto que o usuário está digitando em `barra-pesquisa-1`, retornando as sugestões para o dropdown (`lista_dropdown_1`) em tempo real.
 
 #### `gera_opcoes_dropdown_2(df_final: pd.DataFrame, texto_digitado_2: str, setor_selecionado_1: str) -> list`
-Filtra os setores disponíveis com base no texto que o usuário está digitando em `barra-pesquisa-2`, excluindo o setor já selecionado em `barra-pesquisa-1` para evitar a comparação de um setor consigo mesmo. Retorna `lista_dropdown_2`.
+Filtra os setores pelo texto digitado em `barra-pesquisa-2`, excluindo o setor já selecionado em `barra-pesquisa-1`. Retorna `lista_dropdown_2`.
 
 #### `cria_tabela_professores(df_final: pd.DataFrame, setor_selecionado: list) -> dash.html.Table`
 Filtra os dados para o setor selecionado e apresenta a distribuição de professores para as disciplinas do setor. Retorna a tabela pronta para ser inserida no layout, servindo como base de comparação e uso do dashboard.
+
+#### `cria_grafico(df_final: pd.DataFrame, setores_selecionados: list) -> dict`
+Gera o gráfico de barras com a carga horária média por setor. Está vinculada ao callback `atualizar_tabela_1`, que é quem a chama e injeta a sua saída no Output `"grafico"`. Retorna dict (formato figure) para o componente `grafico`.
 
 ---
 
 ### Callbacks
 
-#### `atualizar_tabela_1(pesquisa_setor_1, range_tempo: list) -> tuple`
+#### `atualizar_grafico(pesquisa_setor_1: str, range_tempo: list) -> dict`
 - **Inputs:** `barra-pesquisa-1` (value), `range-slider` (value)
-- **Outputs:** `grafico` (figure), `tabela-professores-1` (children)
+- **Output:** `grafico` (figure)
 
-Monitora a `barra-pesquisa-1` e o Range Slider de tempo; atualiza simultaneamente o gráfico de barras e a tabela 1. Internamente, chama:
+Monitora a `barra-pesquisa-1` e o Range Slider; atualiza o gráfico de barras. Internamente chama:
 1. `seleciona_dados()` — aplicar filtro temporal
 2. `define_demandas()`
-3. `cria_grafico()` — gera figura Plotly
-4. `cria_tabela_professores()` — monta tabela 1
+3. `cria_grafico()` — gerar figura
 
-Retorna uma tupla `(figure: dict, tabela_1: dash.html.Table)`.
+Retorna dict (figure) para o componente `grafico`.
 
-#### `cria_grafico(df_final: pd.DataFrame, setores_selecionados: list) -> dict`
-Gera o gráfico de barras com a carga horária média por setor. Está vinculada ao callback `atualizar_tabela_1`, que é quem a chama e injeta sua saída no `Output 'grafico'`. Retorna dict (formato figure) para o componente `grafico`.
+#### `atualizar_tabela_1(pesquisa_setor_1: str, range_tempo: list) -> dash.html.Table`
+- **Inputs:** `barra-pesquisa-1` (value), `range-slider` (value)
+- **Output:** `tabela-professores-1` (children)
+
+Monitora a `barra-pesquisa-1` e o Range Slider; atualiza a tabela 1. Internamente chama:
+1. `seleciona_dados()` — aplicar filtro temporal
+2. `define_demandas()`
+3. `cria_tabela_professores()` — montar tabela 1
+
+Retorna `dash.html.Table` para `tabela-professores-1`.
 
 #### `atualizar_opcoes_dropdown_1(valor_digitado: str) -> list`
 - **Input:** `barra-pesquisa-1` (search_value)
