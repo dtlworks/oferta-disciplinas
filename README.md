@@ -11,7 +11,7 @@ Dashboard interativo para visualização e comparação da distribuição de pro
 
 ---
 
-## Visão Geral
+## Motivação
 
 O CTEC-UFAL não dispõe de uma ferramenta para visualizar a distribuição de carga horária docente entre setores e períodos letivos. Este projeto propõe um dashboard que consolida dados de ofertas e setores, permitindo à gestão:
 
@@ -19,19 +19,15 @@ O CTEC-UFAL não dispõe de uma ferramenta para visualizar a distribuição de c
 - Comparar setores lado a lado
 - Planejar alocações com base em dados
 
-### Dados de Entrada
+---
 
-| Arquivo | Descrição |
-|---|---|
-| `ofertas.xlsx` | Disciplinas, docentes e horários por período |
-| `setores_ctec.xlsx` | Vínculo disciplina-setor |
+## Tecnologias
 
-### Saída
-
-- Gráfico de carga horária por setor
-- Tabela detalhada de professores por disciplina
-- Classificação de demanda (baixa, média, alta)
-- Modo comparativo entre dois setores
+- **Python** — processamento e análise de dados
+- **Pandas** — manipulação dos dados tabulares
+- **SQLite / SQLModel** — persistência e consultas
+- **Dash** — aplicação web interativa
+- **Plotly** — visualização de dados
 
 ---
 
@@ -39,19 +35,108 @@ O CTEC-UFAL não dispõe de uma ferramenta para visualizar a distribuição de c
 
 ```
 oferta-disciplinas/
-├── Dados/                       # Dados de entrada (.xlsx / .xlsm)
-│   ├── setores_ctec.xlsx
-│   └── setores_ctec.xlsm
-├── docs/                        # Documentação do projeto
-│   ├── mapeamento-funcoes.md    # Especificação de funções
-│   ├── mapeamento-layout.md     # Especificação do layout
-│   └── esboco-dashboard.md      # Descrição visual do dashboard
-├── notebooks/                   # Google Colab notebooks (prototipagem)
-├── .gitignore                   # Arquivos ignorados pelo Git
-├── LICENSE                      # Licença MIT
-├── requirements.txt             # Dependências do projeto
-└── README.md                    # Este arquivo
+├── notebooks/               # Notebooks Jupyter (ETL + Dashboard)
+│   ├── Tratamento_dos_dados.ipynb
+│   └── Dashboard_oferta.ipynb
+├── dados/
+│   ├── entrada/             # Dados de entrada (.xlsx / .xlsm)
+│   │   ├── setores_ctec.xlsm
+│   │   └── oferta_AAAA.S.xlsx
+│   ├── banco/               # Banco SQLite gerado pelo Notebook 1
+│   │   └── ofertas.db
+│   └── exemplos/            # Exemplos de uso (opcional)
+├── docs/                    # Documentação do projeto
+│   ├── mapeamento-funcoes.md
+│   ├── mapeamento-layout.md
+│   └── esboco-dashboard.md
+├── .gitignore
+├── CHANGELOG.md
+├── LICENSE
+├── requirements.txt
+└── README.md
 ```
+
+---
+
+## Fluxo de Execução
+
+```
+Planilhas de oferta (.xlsx)
+         |
+         v
+Notebook 1 — Tratamento dos dados (ETL)
+         |
+         v
+    SQLite (ofertas.db)
+         |
+         v
+Notebook 2 — Dashboard (Dash/Plotly)
+         |
+         v
+   Dashboard interativo
+```
+
+---
+
+## Como Executar
+
+### 1. Pré-requisitos
+
+- Python 3.10+
+- Gerenciador de pacotes `pip`
+
+### 2. Instalar dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Executar o Notebook 1 (ETL)
+
+Abra e execute `notebooks/Tratamento_dos_dados.ipynb`:
+
+- Jupyter Notebook: `jupyter notebook notebooks/Tratamento_dos_dados.ipynb`
+- VS Code: abra o arquivo e execute célula por célula
+
+Este notebook lê os arquivos de `dados/entrada/`, processa os dados e persiste o resultado em `dados/banco/ofertas.db`.
+
+### 4. Executar o Notebook 2 (Dashboard)
+
+Abra e execute `notebooks/Dashboard_oferta.ipynb`:
+
+Ao executar a última célula, o servidor Dash será iniciado em `http://localhost:8050`.
+
+---
+
+## Estrutura dos Arquivos de Entrada
+
+### Arquivo fixo
+
+`setores_ctec.xlsm` — mapeamento de disciplinas para setores. Deve permanecer inalterado.
+
+### Arquivos de oferta
+
+Seguem obrigatoriamente o padrão:
+
+```
+oferta_AAAA.S.xlsx
+```
+
+Onde `AAAA` é o ano e `S` é o período (1 ou 2).
+
+Exemplos:
+
+```
+oferta_2024.1.xlsx
+oferta_2024.2.xlsx
+oferta_2025.1.xlsx
+```
+
+---
+
+## Resultado Esperado
+
+> Screenshots do dashboard — *em breve*
 
 ---
 
@@ -62,6 +147,12 @@ Documentos complementares disponíveis em [`docs/`](docs/):
 - [`mapeamento-funcoes.md`](docs/mapeamento-funcoes.md) — Especificação detalhada de todas as funções do sistema (ETL, análise, callbacks)
 - [`mapeamento-layout.md`](docs/mapeamento-layout.md) — Estrutura completa do layout com IDs e componentes
 - [`esboco-dashboard.md`](docs/esboco-dashboard.md) — Esboço visual e funcionalidades do dashboard
+
+---
+
+## Autor
+
+Projeto desenvolvido como trabalho da disciplina de Introdução à Ciência de Dados — UFAL/CTEC.
 
 ---
 
