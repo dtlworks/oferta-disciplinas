@@ -85,13 +85,23 @@ Notebook 2 — Dashboard (Dash/Plotly)
 - Python 3.10+
 - Gerenciador de pacotes `pip`
 
-### 2. Instalar dependências
+### 2. Criar ambiente virtual (recomendado)
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate   # Linux/macOS
+# .venv\Scripts\activate    # Windows
+```
+
+### 3. Instalar dependências
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Executar o Notebook 1 (ETL)
+> **Nota:** Os notebooks usam caminhos relativos à raiz do projeto (`dados/entrada/`, `dados/banco/`). Execute os notebooks com o diretório de trabalho na raiz do projeto — é o comportamento padrão ao abrir a pasta `oferta-disciplinas` no Jupyter ou VS Code.
+
+### 4. Executar o Notebook 1 (ETL)
 
 Abra e execute `notebooks/Tratamento_dos_dados.ipynb`:
 
@@ -100,7 +110,7 @@ Abra e execute `notebooks/Tratamento_dos_dados.ipynb`:
 
 Este notebook lê os arquivos de `dados/entrada/`, processa os dados e persiste o resultado em `dados/banco/ofertas.db`.
 
-### 4. Executar o Notebook 2 (Dashboard)
+### 5. Executar o Notebook 2 (Dashboard)
 
 Abra e execute `notebooks/Dashboard_oferta.ipynb`:
 
