@@ -144,12 +144,6 @@ oferta_2025.1.xlsx
 
 ---
 
-## Resultado Esperado
-
-> Screenshots do dashboard — *em breve*
-
----
-
 ## Documentação
 
 Documentos complementares disponíveis em [`docs/`](docs/):
@@ -157,13 +151,7 @@ Documentos complementares disponíveis em [`docs/`](docs/):
 - [`mapeamento-funcoes.md`](docs/mapeamento-funcoes.md) — Especificação detalhada de todas as funções do sistema (ETL, análise, callbacks)
 - [`mapeamento-layout.md`](docs/mapeamento-layout.md) — Estrutura completa do layout com IDs e componentes
 - [`esboco-dashboard.md`](docs/esboco-dashboard.md) — Esboço visual e funcionalidades do dashboard
-
----
-
-## Autor
-
-Projeto desenvolvido como trabalho da disciplina de Introdução à Ciência de Dados — UFAL/CTEC.
-
+  
 ---
 
 ## Licença
